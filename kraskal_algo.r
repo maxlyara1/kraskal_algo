@@ -1,6 +1,6 @@
 kraskal <- function(matrix){
   # Устанавливаем пакеты
-  #install.packages('igraph')
+  install.packages('igraph')
   library('igraph')
   
   # Создаём 1 граф и веса рёбер
@@ -14,7 +14,7 @@ kraskal <- function(matrix){
     V(g)[i]$color <- colors[i]
     set.seed(6)
     plot(g, edge.label=E(g)$label, layout=layout.circle)
-    Sys.sleep(0.2)
+    Sys.sleep(0.1)
   }
   
   # Создаём 2 граф, который будет использоваться как итоговый
@@ -32,29 +32,42 @@ kraskal <- function(matrix){
     
     # Если цвет одной вершины не такой, как и у другой у рассматриваемого ребра,
     # то делаем их одного цвета
-    if(V(g)[vert[1]]$color != V(g)[vert[2]]$color){
+    
+    if(V(g.krask)[vert[1]]$color != V(g.krask)[vert[2]]$color){
       for (i in 1:(gorder(g))){
         if (V(g.krask)[i]$color == V(g.krask)[vert[2]]$color){
           V(g.krask)[i]$color <- V(g.krask)[vert[1]]$color
-          cat(vert[1], '-', i, '\n')
         }
       }
       V(g.krask)[vert[2]]$color <- V(g.krask)[vert[1]]$color
+      cat(vert[1], '-', vert[2], '\n')
+      E(g.krask, P = c(vert[1],vert[2]))$color <- 'red'
     }
     
-    # Рисуем 2 граф
-    set.seed(6)
-    plot(g.krask, edge.label=E(g)$label, layout=layout.circle)
-    Sys.sleep(0.5)
     
     # Удаляем рассмотренное ребро из 1 графа, чтобы оно не зацикливало while,
     # так, как иначе оно всегда будет минимальным
     g <- delete.edges(g, min_num_edge)
+    
+    
+    # Рисуем 2 граф
+    set.seed(6)
+    plot(g.krask, edge.label=E(g)$label, layout=layout.circle)
+    Sys.sleep(0.3)
   }
 }
 
 
 # Задаем матрицу
+#Из https://neerc.ifmo.ru/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%9A%D1%80%D0%B0%D1%81%D0%BA%D0%B0%D0%BB%D0%B0
+#matr <- matrix(0, ncol = 5, nrow = 5)
+#matr[1,2] <- 3
+#matr[1,5] <- 1
+#matr[2,5] <- 4
+#matr[5,3] <- 6
+#matr[2,3] <- 5
+#matr[5,4] <- 7
+#matr[3,4] <- 2
 matr <- matrix(0, ncol = 11, nrow = 11)
 matr[1,2] <- 10
 matr[1,3] <- 4
@@ -75,6 +88,7 @@ matr[6,4] <- 8
 matr[5,4] <- 8
 matr[4,11] <- 13
 matr[9,11] <- 5
+
 
 
 kraskal(matr)
