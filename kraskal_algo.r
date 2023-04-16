@@ -13,15 +13,14 @@ kraskal <- function(matrix){
   for (i in 1:(gorder(g))){
     V(g)[i]$color <- colors[i]
     set.seed(6)
-    plot(g, edge.label=E(g)$label, layout=layout.circle)
+    plot(g, edge.label=E(g)$label, layout=layout.lgl, 
+         main="Разукрашиваем каждую вершину")
     Sys.sleep(0.1)
   }
   
   # Создаём 2 граф, который будет использоваться как итоговый
   g.krask <- g
-  set.seed(6)
-  plot(g.krask, edge.label=E(g.krask)$label, layout=layout.circle)
-  
+  E(g.krask)$color <- 'grey'
   
   # Пока у 1 графа есть рёбра...
   while(gsize(g)){
@@ -38,6 +37,8 @@ kraskal <- function(matrix){
           V(g.krask)[i]$color <- V(g.krask)[vert[1]]$color
         }
       }
+      
+      # Покраска вершин и рёбер остовного дерева
       V(g.krask)[vert[2]]$color <- V(g.krask)[vert[1]]$color
       cat(vert[1], '-', vert[2], '\n')
       E(g.krask, P = c(vert[1],vert[2]))$color <- 'red'
@@ -51,7 +52,7 @@ kraskal <- function(matrix){
     
     # Рисуем 2 граф
     set.seed(6)
-    plot(g.krask, edge.label=E(g.krask)$label, layout=layout.lgl)
+    plot(g.krask, layout=layout.lgl, main="Отрисовка остовного дерева")
     # Разные layout:
     #circle
     #sphere
@@ -61,7 +62,7 @@ kraskal <- function(matrix){
     #kamada.kawai
     #lgl
     
-    Sys.sleep(0.3)
+    Sys.sleep(0.5)
   }
 }
 
