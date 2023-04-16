@@ -1,6 +1,6 @@
 kraskal <- function(matrix){
   # Устанавливаем пакеты
-  install.packages('igraph')
+  #install.packages('igraph')
   library('igraph')
   
   # Создаём 1 граф и веса рёбер
@@ -20,7 +20,7 @@ kraskal <- function(matrix){
   # Создаём 2 граф, который будет использоваться как итоговый
   g.krask <- g
   set.seed(6)
-  plot(g.krask, edge.label=E(g)$label, layout=layout.circle)
+  plot(g.krask, edge.label=E(g.krask)$label, layout=layout.circle)
   
   
   # Пока у 1 графа есть рёбра...
@@ -32,7 +32,6 @@ kraskal <- function(matrix){
     
     # Если цвет одной вершины не такой, как и у другой у рассматриваемого ребра,
     # то делаем их одного цвета
-    
     if(V(g.krask)[vert[1]]$color != V(g.krask)[vert[2]]$color){
       for (i in 1:(gorder(g))){
         if (V(g.krask)[i]$color == V(g.krask)[vert[2]]$color){
@@ -52,7 +51,16 @@ kraskal <- function(matrix){
     
     # Рисуем 2 граф
     set.seed(6)
-    plot(g.krask, edge.label=E(g)$label, layout=layout.circle)
+    plot(g.krask, edge.label=E(g.krask)$label, layout=layout.lgl)
+    # Разные layout:
+    #circle
+    #sphere
+    #reingold.tilford
+    #random
+    #fruchterman.reingold
+    #kamada.kawai
+    #lgl
+    
     Sys.sleep(0.3)
   }
 }
